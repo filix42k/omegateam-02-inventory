@@ -1,8 +1,8 @@
 import json
 import os
 
-# 1. กำหนดตำแหน่งไฟล์ JSON (ปรับชื่อไฟล์ 'items.json' ให้ตรงกับที่คุณใช้งานจริง)
-file_path = os.path.join('data', 'items.json')
+# 1. กำหนดตำแหน่งไฟล์ JSON (ปรับชื่อไฟล์ 'item.json' ให้ตรงกับที่คุณใช้งานจริง)
+file_path = 'item.json'
 
 try:
     # 2. เปิดและอ่านไฟล์ JSON
