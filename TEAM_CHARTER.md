@@ -6,7 +6,7 @@
 |---|---|---|
 | นางสาวนริสรา ไกยสินธุ์ | filix42k | Product Owner |
 | นายชินชนกนันทร์ พรมศรี | chinchanoknantpromsri | Scrum Master |
-| นายพชรดล มูลสาระ | poom24052549 | Scrum Master |
+| นายพชรดนย์ มูลสาระ | poom24052549 | Scrum Master |
 | นายกิตติธร รูปสะอาด  | kittithonru-coder | Developer |
 | นายเตชสิทธิ์ แก้ววิเชียร  | Mik-kaewwichian | Developer |
 | นายพงศกร ศรีวิเศษ  | Phongsakhon870 | Developer |
