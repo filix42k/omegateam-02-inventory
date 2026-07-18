@@ -1,4 +1,4 @@
-\# Sprint Retrospective: Sprint 1
+# Sprint Retrospective: Sprint 1
 
 
 
