@@ -20,7 +20,7 @@
 
 ## Sprint Goal (Sprint 1)
 
-Sprint นี้ทีมจะส่งมอบระบบที่ดูรายการสินค้าและเพิ่มสินค้าใหม่ได้จริง และผ่าน acceptance criteria ครบทุกข้อ
+//
 
 ## AI Usage Policy
 
