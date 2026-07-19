@@ -1,6 +1,7 @@
 import inventory
 
 
+# [US-02] Task-03: เขียนฟังก์ชันรับค่าอินพุตและตรวจสอบ Validation เบื้องต้น (Assignee: Phongsakhon870)
 def _read_int(prompt_text):
     while True:
         raw_value = input(prompt_text).strip()
@@ -25,10 +26,12 @@ def main_menu():
         choice = input("กรุณาเลือกเมนู (0-4): ").strip()
 
         if choice == "1":
+            # [US-01] Task-02: ดึงรายการสินค้ามาแสดงผล (Assignee: Mik-kaewwichian)
             items_list = inventory.load_items()
             inventory.list_items(items_list)
 
         elif choice == "2":
+            # [US-02] Task-03 & Task-04: รับข้อมูลสินค้าใหม่และบันทึกลงระบบ (Assignee: Phongsakhon870, chinchanoknantpromsri)
             print("\n--- เพิ่มสินค้าใหม่ ---")
             code = input("กรอกรหัสสินค้า: ").strip()
             name = input("กรอกชื่อสินค้า: ").strip()
@@ -37,6 +40,7 @@ def main_menu():
             inventory.add_item(items_list, code, name, quantity)
 
         elif choice == "3":
+            # [US-03] Task-05: รับสินค้าเข้าสต็อก (Assignee: poom24052549-prog)
             print("\n--- รับสินค้าเข้าสต็อก ---")
             code = input("กรอกรหัสสินค้าที่ต้องการรับเข้า: ").strip()
             quantity = _read_int("กรอกจำนวนที่รับเข้า: ")
@@ -44,6 +48,7 @@ def main_menu():
             inventory.receive_stock(items_list, code, quantity)
 
         elif choice == "4":
+            # [US-03] Task-06: จ่ายสินค้าออกสต็อกและเช็กยอด (Assignee: filix42k)
             print("\n--- จ่ายสินค้าออกสต็อก ---")
             code = input("กรอกรหัสสินค้าที่ต้องการจ่ายออก: ").strip()
             quantity = _read_int("กรอกจำนวนที่จ่ายออก: ")
