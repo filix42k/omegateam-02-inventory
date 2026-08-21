@@ -1,0 +1,6 @@
+| ประเด็น | ก่อนมี context (ขั้นที่ 4) | หลังมี context (ขั้นที่ 6) |
+| :--- | :--- | :--- |
+| **แยกไฟล์/ความรับผิดชอบ** | มักจะเขียนคลาสและ Business Logic ทั้งหมดรวมกันไว้ในไฟล์เดียวเพื่อให้โค้ดรันได้ง่ายที่สุด | แยกส่วนประกอบเป็น 3 ไฟล์อย่างชัดเจน (`models.py`, `notifiers.py`, `service.py`) ตามหลักการ SRP และกฎที่กำหนด |
+| **type hint + docstring** | อาจมีการใช้ type hint แค่บางส่วน และ docstring มักจะเป็นภาษาอังกฤษหรือไม่มีเลย | บังคับใช้ type hint ทุก function signature และมี docstring เป็นภาษาไทยในทุก public method ครบถ้วน |
+| **service ผูกกับ notifier ตรง ๆ หรือไม่** | `InventoryService` มักจะเรียกสร้างอินสแตนซ์และใช้งาน `EmailNotifier` หรือ `SMSNotifier` โดยตรง (Tight Coupling) | ไม่ผูกติดกันตรง ๆ โดย `InventoryService` จะเรียกผ่าน Abstraction (Protocol) และใช้ `NotifierFactory` สร้างให้แทน (ตามหลัก DIP/OCP) |
+| **hardcode config หรือไม่** | มักจะระบุอีเมล เบอร์โทร หรือค่า Threshold ฝังไว้ในเมธอดของ Business Logic โดยตรง | ไม่มีการ hardcode ข้อมูลเหล่านี้ในลอจิก แต่ใช้วิธีรับค่าผ่าน Constructor (Dependency Injection) |
