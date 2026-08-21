@@ -1,5 +1,9 @@
+# Class Diagram - Inventory System (Omega Team)
+
+```mermaid
 classDiagram
-    %% Models (models.py)
+    direction TB
+
     class Category {
         +str name
     }
@@ -7,10 +11,12 @@ classDiagram
     class Product {
         +str id
         +str name
+        +Category category
         +float price
         +int quantity
         +int threshold
         +str notifier_type
+        +get_notifier_types() List~str~
     }
 
     class StockTransaction {
@@ -20,50 +26,47 @@ classDiagram
         +datetime timestamp
     }
 
-    %% Relationships in Models
-    Product o-- Category : has
-
-    %% Notifiers (notifiers.py)
     class Notifier {
-        <<Protocol>>
-        +send(message: str, destination: str) None
+        <<interface>>
+        +send(message: str, destination: str) void
     }
 
     class EmailNotifier {
-        +send(message: str, destination: str) None
+        +send(message: str, destination: str) void
     }
 
     class SMSNotifier {
-        +send(message: str, destination: str) None
+        +send(message: str, destination: str) void
     }
 
     class NotifierFactory {
-        -Dict _notifiers$
-        +get_notifier(notifier_type: str)$ Notifier
-        +register_notifier(notifier_type: str, notifier: Notifier)$ None
+        -Dict~str, Notifier~ _notifiers$
+        +get_notifier(notifier_type: str) Notifier$
+        +get_notifiers(notifier_type_str: str) List~Notifier~$
+        +register_notifier(notifier_type: str, notifier: Notifier) void$
     }
 
-    %% Relationships in Notifiers
-    EmailNotifier ..|> Notifier : Realization
-    SMSNotifier ..|> Notifier : Realization
-    NotifierFactory ..> Notifier : Creates/Returns
-
-    %% Service (service.py)
     class InventoryService {
-        +Dict products
-        +List transactions
-        +Dict admin_contacts
-        +__init__(admin_contacts: Dict)
-        +add_product(product: Product) None
-        +receive_stock(product_id: str, quantity: int) None
-        +dispense_stock(product_id: str, quantity: int) None
-        -_check_threshold_and_notify(product: Product) None
-        +get_stock_value_report() Dict
-        +set_product_threshold(product_id: str, threshold: int) None
-        +set_product_notifier(product_id: str, notifier_type: str) None
+        +Dict~str, Product~ products
+        +List~StockTransaction~ transactions
+        +Dict~str, str~ admin_contacts
+        +add_product(product: Product) void
+        +receive_stock(product_id: str, quantity: int) void
+        +dispense_stock(product_id: str, quantity: int) void
+        -_check_threshold_and_notify(product: Product, old_quantity: int) void
+        +get_stock_value_report() Dict~str, Any~
+        +set_product_threshold(product_id: str, threshold: int) void
+        +set_product_notifier(product_id: str, notifier_type: str) void
     }
 
-    %% Service Relationships
-    InventoryService *-- Product : manages
-    InventoryService *-- StockTransaction : records
-    InventoryService ..> NotifierFactory : Dependency
+    %% ความสัมพันธ์ (Relationships)
+    Product "1" --> "1" Category : has category
+    InventoryService "1" *-- "*" Product : Composition (จัดเก็บและดูแลสินค้า)
+    InventoryService "1" *-- "*" StockTransaction : Composition (บันทึกประวัติการรับ-จ่าย)
+    
+    Notifier <|.. EmailNotifier : Realization (สืบทอด Interface)
+    Notifier <|.. SMSNotifier : Realization (สืบทอด Interface)
+    
+    NotifierFactory "1" o-- "*" Notifier : Aggregation (เก็บอินสแตนซ์ Notifier)
+    InventoryService ..> NotifierFactory : Dependency (เรียกใช้สร้าง Notifier)
+```
