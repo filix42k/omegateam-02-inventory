@@ -36,3 +36,25 @@
 | **type hint + docstring** | อาจมีการใช้ type hint แค่บางส่วน และ docstring มักจะเป็นภาษาอังกฤษหรือไม่มีเลย | บังคับใช้ type hint ทุก function signature และมี docstring เป็นภาษาไทยในทุก public method ครบถ้วน |
 | **service ผูกกับ notifier ตรง ๆ หรือไม่** | `InventoryService` มักจะเรียกสร้างอินสแตนซ์และใช้งาน `EmailNotifier` หรือ `SMSNotifier` โดยตรง (Tight Coupling) | ไม่ผูกติดกันตรง ๆ โดย `InventoryService` จะเรียกผ่าน Abstraction (Protocol) และใช้ `NotifierFactory` สร้างให้แทน (ตามหลัก DIP/OCP) |
 | **hardcode config หรือไม่** | มักจะระบุอีเมล เบอร์โทร หรือค่า Threshold ฝังไว้ในเมธอดของ Business Logic โดยตรง | ไม่มีการ hardcode ข้อมูลเหล่านี้ในลอจิก แต่ใช้วิธีรับค่าผ่าน Constructor (Dependency Injection) |
+
+# AI Iteration Log (Lab 3: Spec-Driven + Context Engineering)
+
+## Iteration 1: Low Stock Alert Trigger Condition
+* **ผลที่ผิด:** ระบบแจ้งเตือนทำงานเมื่อจำนวนสินค้าคงเหลือเท่ากับค่า Threshold พอดี (`quantity == threshold`) ทั้งที่ความต้องการคือต้องแจ้งเตือนเฉพาะเมื่อสินค้าต่ำกว่า Threshold เท่านั้น (`quantity < threshold`)
+* **สาเหตุ (Spec หรือ Context):** **Spec Issue** — ใน `SPEC.md` เดิมระบุข้อความเพียง "แจ้งเตือนเมื่อสต็อกต่ำกว่ากำหนด" ทำให้ AI ตีความ Boundary Condition คลาดเคลื่อนเป็น `<= threshold` และไม่มี Acceptance Criteria กำหนดผลลัพธ์ของกรณีที่สต็อกเท่ากับ Threshold พอดี
+* **แก้ต้นทางอย่างไร:** 
+  * ปรับปรุงไฟล์ `SPEC.md` ในส่วน Acceptance Criteria โดยเพิ่ม Scenario:
+    - `Scenario: Stock equals threshold -> Given threshold = 5 and current stock = 5, When stock checked, Then do NOT trigger alert`
+  * ระบุเงื่อนไขทางคณิตศาสตร์ให้ชัดเจนว่าเป็น `quantity < threshold`
+* **ผลหลังแก้:** ส่ง Prompt ให้ AI ปรับ implementation ใหม่ โค้ดเปลี่ยนเงื่อนไขเป็น `<` และรัน Unit Test `test_stock_equals_threshold_should_not_notify` ผ่าน
+
+---
+
+## Iteration 2: Notification Mocking & Output Formatting Rule
+* **ผลที่ผิด:** ฟังก์ชันแจ้งเตือนแสดงข้อความไม่ตรงตามรูปแบบมาตรฐานที่กำหนด และมีการนำเข้าโมดูลเชื่อมต่อระบบส่งข้อความภายนอกจริง (เช่น พยายามใช้ SMTP/SMS API)
+* **สาเหตุ (Spec หรือ Context):** **Context Issue** — ใน `.ai-rules.md` และบริบทที่ส่งให้ AI ขาดข้อจำกัดด้านการ Mocking และรูปแบบข้อความ Output ที่เคร่งครัด
+* **แก้ต้นทางอย่างไร:** 
+  * เพิ่มข้อกำหนดใน `.ai-rules.md`:
+    - `RULE-01: ห้ามใช้งาน external network หรือ third-party email/SMS libraries ให้ใช้ built-in print() เท่านั้น`
+    - `RULE-02: Format ข้อความแจ้งเตือนต้องขึ้นต้นด้วย [Email] หรือ [SMS] ตามด้วยปลายทางและข้อความตามเทมเพลต: [Channel] To: {destination} - แจ้งเตือนสต็อกต่ำ: สินค้า {name} คงเหลือ {quantity} (Threshold: {threshold})`
+* **ผลหลังแก้:** สั่ง AI ปรับปรุงโค้ดส่วน `NotifierFactory` และ `Notifier` ใหม่ โค้ดใช้ `print()` จำลองผลลัพธ์ตรงตาม Template และรัน Unit Test ทั้ง Email และ SMS ผ่านทั้งหมด
