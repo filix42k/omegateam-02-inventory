@@ -6,6 +6,11 @@
 - Story point ที่ทำสำเร็จ (Done): 13 points
 - Velocity Sprint 1: 13 points
 
+## เพดานงานที่ทำพร้อมกัน (WIP limit)
+- เพดานที่ตั้งไว้ใน TEAM_CHARTER.md: 3 ใบ
+- ชนเพดานกี่ครั้งใน sprint นี้: 1 ครั้ง
+- เพดานที่จะใช้ใน sprint หน้า: 3 ใบ เพราะ สมาชิกสามารถแบ่งงานกันทำได้โดยไม่ชนกัน
+
 > ทีมวางแผน US-01 = 3 points, US-02 = 5 points และ US-03 = 5 points  
 > นับเฉพาะ User Story ที่อยู่ในสถานะ Done เมื่อสิ้นสุด Sprint
 
