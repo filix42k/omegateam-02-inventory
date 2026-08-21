@@ -1,37 +1,54 @@
-sequenceDiagram
-    actor Staff as พนักงาน
-    participant IS as InventoryService
-    participant P as Product
-    participant Tx as StockTransaction
-    participant NF as NotifierFactory
-    participant N as Notifier (Email/SMS)
+# Sequence Diagram - Low Stock Notification Flow (Step 8)
 
-    Staff->>IS: dispense_stock(product_id, quantity)
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Staff as พนักงาน (Staff)
+    participant Service as InventoryService
+    participant Prod as product : Product
+    participant Factory as NotifierFactory
+    participant Notifier as notifier : Notifier (Email/SMS)
+
+    Staff->>Service: dispense_stock(product_id, quantity)
+    activate Service
+
+    Service->>Service: Validate quantity > 0 & product_id exists
+
+    Service->>Prod: Check quantity
+    activate Prod
+    Prod-->>Service: current quantity
+    deactivate Prod
+
+    Service->>Service: Validate stock sufficiency (quantity <= current quantity)
+
+    Service->>Prod: Update stock (quantity -= quantity)
+    Service->>Service: Record StockTransaction(out)
+
+    Service->>Service: _check_threshold_and_notify(product, old_quantity)
+    activate Service
     
-    %% ตรวจสอบรหัสสินค้า
-    IS->>IS: ตรวจสอบ product_id ใน self.products
-    
-    %% ตรวจสอบจำนวนสต็อก
-    IS->>P: อ่านค่า quantity ปัจจุบัน
-    alt จำนวนสินค้าไม่พอ (quantity < ขอเบิก)
-        IS-->>Staff: raise ValueError("จำนวนคงเหลือไม่พอ")
-    else จำนวนสินค้าเพียงพอ
-        %% อัปเดตสต็อกและบันทึก Transaction
-        IS->>P: ลดจำนวน quantity (product.quantity -= quantity)
-        IS->>Tx: สร้าง StockTransaction(product_id, "out", quantity)
-        Tx-->>IS: คืนค่า instance
-        IS->>IS: นำ transaction เพิ่มลง self.transactions
-        
-        %% ตรวจสอบ Threshold
-        IS->>IS: _check_threshold_and_notify(product)
-        IS->>P: ตรวจสอบ quantity < threshold
-        
-        alt ถ้าน้อยกว่า Threshold (สต็อกต่ำ)
-            IS->>P: ดึงค่า notifier_type
-            IS->>NF: NotifierFactory.get_notifier(notifier_type)
-            NF-->>IS: คืนค่า Notifier object (Email/SMS)
-            IS->>N: notifier.send(message, destination)
-            N-->>IS: ส่งแจ้งเตือนสำเร็จ
+    opt State Transition: old_quantity >= threshold AND new_quantity < threshold
+        Service->>Prod: get_notifier_types()
+        activate Prod
+        Prod-->>Service: notifier_types (e.g. ["email", "sms"])
+        deactivate Prod
+
+        loop For each notifier_type
+            Service->>Factory: get_notifier(notifier_type)
+            activate Factory
+            Factory-->>Service: notifier instance (EmailNotifier / SMSNotifier)
+            deactivate Factory
+
+            Service->>Notifier: send(message, destination)
+            activate Notifier
+            Note over Notifier: Print simulated notification log
+            Notifier-->>Service: void
+            deactivate Notifier
         end
-        IS-->>Staff: ทำรายการจ่ายสินค้าสำเร็จ
     end
+
+    deactivate Service
+    Service-->>Staff: Return Success (Stock updated & notified if low)
+    deactivate Service
+```
