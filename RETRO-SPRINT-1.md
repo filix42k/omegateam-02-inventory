@@ -58,3 +58,7 @@ Issue #4: เขียนฟังก์ชัน `load_items()` อ่านข
 
 **จำนวน Pull Request ที่ Merge สำเร็จ:**  
 ทีม Merge Pull Request สำเร็จทั้งหมด 6 PR
+
+### ภาพถ่าย Project Board ณ สิ้นสุด Sprint 1
+
+![Project Board Screenshot](image.png)
