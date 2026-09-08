@@ -1,17 +1,20 @@
 from typing import Dict, Any, List
 from src.models import Product, StockTransaction
-from src.notifiers import NotifierFactory
+from src.notifiers import Notifier
 
 class InventoryService:
-    def __init__(self, admin_contacts: Dict[str, str]):
+    def __init__(self, observers: List[Notifier] = None):
         """
-        รับค่า dependencies เริ่มต้นผ่าน Constructor
-        :param admin_contacts: ดิกชันนารีเก็บข้อมูลปลายทางสำหรับแจ้งเตือน 
-                               เช่น {"email": "manager@company.com", "sms": "0812345678"}
+        รับค่า dependencies เริ่มต้นผ่าน Constructor (DIP)
+        :param observers: รายการของ Notifier ที่ทำหน้าที่เป็น Observer
         """
         self.products: Dict[str, Product] = {}
         self.transactions: List[StockTransaction] = []
-        self.admin_contacts = admin_contacts
+        self.observers: List[Notifier] = observers if observers is not None else []
+
+    def add_observer(self, observer: Notifier) -> None:
+        """เพิ่ม Observer เข้าระบบ"""
+        self.observers.append(observer)
 
     def add_product(self, product: Product) -> None:
         """เพิ่มสินค้าใหม่เข้าสู่ระบบ"""
@@ -43,13 +46,11 @@ class InventoryService:
         self._check_threshold_and_notify(product)
 
     def _check_threshold_and_notify(self, product: Product) -> None:
-        """ตรวจสอบสถานะสต็อกและส่งแจ้งเตือนถ้าต่ำกว่ากำหนด"""
+        """ตรวจสอบสถานะสต็อกและเรียก notify ทุก observer ถ้าต่ำกว่ากำหนด"""
         if product.quantity < product.threshold:
-            notifier = NotifierFactory.get_notifier(product.notifier_type)
-            destination = self.admin_contacts.get(product.notifier_type, "Unknown Destination")
             message = f"แจ้งเตือนสต็อกต่ำ: สินค้า {product.name} คงเหลือ {product.quantity} (Threshold: {product.threshold})"
-            
-            notifier.send(message, destination)
+            for observer in self.observers:
+                observer.notify(message)
 
     def get_stock_value_report(self) -> Dict[str, Any]:
         """คำนวณและคืนค่ารายงานมูลค่าสต็อกรวมแยกตามหมวดหมู่สินค้า"""
@@ -81,14 +82,4 @@ class InventoryService:
         if product_id not in self.products:
             raise ValueError("ไม่พบสินค้าในระบบ")
         
-        self.products[product_id].threshold = threshold
-
-    def set_product_notifier(self, product_id: str, notifier_type: str) -> None:
-        """เลือกหรืออัปเดตช่องทางแจ้งเตือนเป็นรายสินค้า"""
-        if product_id not in self.products:
-            raise ValueError("ไม่พบสินค้าในระบบ")
-        
-        # ตรวจสอบล่วงหน้าว่ามี Notification Type นี้ใน Factory หรือไม่
-        NotifierFactory.get_notifier(notifier_type)
-        self.products[product_id].notifier_type = notifier_type
-        
+        self.products[product_id].threshold = threshold        

@@ -1,14 +1,19 @@
-# Sequence Diagram - Low Stock Notification Flow (Step 8)
+# Sequence Diagram - Low Stock Notification Flow (Observer Pattern)
 
 
 ```mermaid
 sequenceDiagram
     autonumber
     actor Staff as พนักงาน (Staff)
+    participant Setup as Setup Code (Client)
     participant Service as InventoryService
     participant Prod as product : Product
-    participant Factory as NotifierFactory
-    participant Notifier as notifier : Notifier (Email/SMS)
+    participant Notifier as observer : Notifier (Email/SMS)
+
+    Note over Setup, Service: Setup Phase (Dependency Injection)
+    Setup->>Service: InventoryService(observers=[email_notifier, sms_notifier])
+    activate Setup
+    deactivate Setup
 
     Staff->>Service: dispense_stock(product_id, quantity)
     activate Service
@@ -25,24 +30,14 @@ sequenceDiagram
     Service->>Prod: Update stock (quantity -= quantity)
     Service->>Service: Record StockTransaction(out)
 
-    Service->>Service: _check_threshold_and_notify(product, old_quantity)
+    Service->>Service: _check_threshold_and_notify(product)
     activate Service
     
-    opt State Transition: old_quantity >= threshold AND new_quantity < threshold
-        Service->>Prod: get_notifier_types()
-        activate Prod
-        Prod-->>Service: notifier_types (e.g. ["email", "sms"])
-        deactivate Prod
-
-        loop For each notifier_type
-            Service->>Factory: get_notifier(notifier_type)
-            activate Factory
-            Factory-->>Service: notifier instance (EmailNotifier / SMSNotifier)
-            deactivate Factory
-
-            Service->>Notifier: send(message, destination)
+    opt State Transition: new_quantity < threshold
+        loop For each observer in self.observers
+            Service->>Notifier: notify(message)
             activate Notifier
-            Note over Notifier: Print simulated notification log
+            Note over Notifier: Print simulated notification log (using injected destination)
             Notifier-->>Service: void
             deactivate Notifier
         end
