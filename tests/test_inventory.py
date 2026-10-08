@@ -44,3 +44,44 @@ def test_negative_threshold_returns_empty_list(inventory):
     inventory.add_item("Pencil", 0, 5.0)
 
     assert inventory.low_stock_items(-1) == []
+
+
+def test_sell_exactly_available_quantity_leaves_zero_stock(inventory):
+    inventory.add_item("Pencil", 4, 5.0)
+
+    assert inventory.sell("Pencil", 4) == 0
+    assert inventory.low_stock_items(0)[0].quantity == 0
+
+
+@pytest.mark.parametrize("amount", [0, -1])
+def test_sell_rejects_zero_or_negative_quantity_without_changing_stock(inventory, amount):
+    inventory.add_item("Pencil", 4, 5.0)
+
+    with pytest.raises(ValueError, match="จำนวนที่ขายต้องมากกว่าศูนย์"):
+        inventory.sell("Pencil", amount)
+
+    assert inventory.low_stock_items(10)[0].quantity == 4
+
+
+def test_sell_rejects_more_than_available_stock_without_changing_stock(inventory):
+    inventory.add_item("Pencil", 4, 5.0)
+
+    with pytest.raises(ValueError, match="ไม่เพียงพอ"):
+        inventory.sell("Pencil", 5)
+
+    assert inventory.low_stock_items(10)[0].quantity == 4
+
+
+def test_sell_missing_item_raises_key_error(inventory):
+    with pytest.raises(KeyError, match="ไม่พบสินค้า"):
+        inventory.sell("Missing", 1)
+
+
+@pytest.mark.parametrize("amount", [1.5, "2"])
+def test_sell_rejects_non_integer_quantity(inventory, amount):
+    inventory.add_item("Pencil", 4, 5.0)
+
+    with pytest.raises(TypeError, match="quantity must be an integer"):
+        inventory.sell("Pencil", amount)
+
+    assert inventory.low_stock_items(10)[0].quantity == 4
