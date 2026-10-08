@@ -33,4 +33,4 @@
 ผล `python -m pytest tests/ -v`: **6 passed in 0.03s**. ผลและชื่อ test ถูกบันทึกใน `test-results.txt`.
 
 ## Commit แยก root cause
-ยังไม่ได้สร้าง commit แยกสาม root causes เพราะนโยบาย branch ของทีมกำหนด `feat/<issue-number>-<short-name>` แต่ไม่พบ issue ที่เกี่ยวข้องให้ใช้เป็นเลขอ้างอิง; ไม่ควรเดา issue number หรือ commit ตรง main.
+ประวัติ Git จริงรวมการแก้ทั้งสาม root causes ไว้ใน commit `9315382` (`Add Lab 4 AI coding UX deliverables`) จึงไม่มี commit แยกตาม root cause ตามที่โจทย์แนะนำ เอกสารติดตามผลภายหลังอยู่บน branch `codex/lab4-followup`; ไม่ได้สร้างประวัติย้อนหลังหรืออ้างว่า commit แยกมีอยู่.

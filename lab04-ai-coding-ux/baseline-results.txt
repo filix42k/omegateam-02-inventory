@@ -1,19 +1,8 @@
-Pytest was unavailable in this environment. These are instructor test functions called directly; they are not a pytest run.
+Baseline before fixes: 2/6 passed. The original instructor code failed four tests:
 
-Original instructor code before fixes: 2/6 passed
-PASS test_apply_discount_zero
-PASS test_average_price
-FAIL test_apply_discount_basic — expected 90.0 for (100.0, 10), original result 99.9
-FAIL test_bulk_total — expected 270.0 for ([100.0, 100.0, 100.0], 10), caused by apply_discount formula
-FAIL test_average_price_empty — ZeroDivisionError at sum(prices) / len(prices)
-FAIL test_cheapest_n — expected [10.0, 20.0], original slice omitted first value
+- `test_apply_discount_basic`: returned 99.9 instead of 90.0.
+- `test_bulk_total`: also failed because it uses the incorrect discount formula.
+- `test_average_price_empty`: raised `ZeroDivisionError`.
+- `test_cheapest_n`: omitted the cheapest item because the slice started at index 1.
 
-After the three root cause fixes in discount.py: 6/6 passed by direct invocation of the same test functions.
-PASS test_apply_discount_basic
-PASS test_apply_discount_zero
-PASS test_bulk_total
-PASS test_average_price
-PASS test_average_price_empty
-PASS test_cheapest_n
-
-Required confirmation still pending: `python -m pytest tests/ -v` on an environment where pytest is installed.
+After the three root-cause fixes, `python -m pytest tests/ -v` was run with Python 3.12.14 and pytest 9.1.1. Result: **6 passed in 0.03s**. See `test-results.txt` for per-test output. This baseline file records the pre-fix failures; it is not a second post-fix test run.

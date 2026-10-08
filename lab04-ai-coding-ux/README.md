@@ -1,28 +1,38 @@
-# Lab 04 — สถานะงาน
+# Lab 04 — สถานะและหลักฐาน
 
-เตรียมใน repository เดิมตามโจทย์ ไม่มีการแก้ระบบ inventory หลัก
+งาน Lab 4 เก็บไว้ในโฟลเดอร์นี้ใน repository เดิม ส่วนงาน Lab 5 อยู่ที่โฟลเดอร์หลัก
 
-## มีแล้ว
-- findings และ persona พร้อม journey map: **role-play scenario ที่ AI ช่วยร่างตามคำขอผู้ใช้; ไม่ใช่การ role-play กับเพื่อนหรือสัมภาษณ์จริง**
-- text wireframe ครบ Login / Dashboard / Add Product
-- assets/inventory-mockup.drawio ครบ 3 หน้า แก้ไขได้ใน draw.io
-- accessibility checklist, contrast คำนวณผ่าน และปรับ error messages 2 จุดในร่างโดย Codex
-- inventory.py, inventory_service.py และ tests/test_discount.py เป็นสำเนาจากผู้สอน; แก้ discount.py แล้วตาม 3 root causes
-- baseline-results.txt: ผลเดิม 2/6 โดยเรียกตรง; หลังแก้ยืนยัน `python -m pytest tests/ -v` ผ่าน 6/6 ใน test-results.txt
-- AI-assisted code review 8 จุด, debug log พร้อมผลก่อน/หลัง, ตัวอย่าง prompt/context และร่างแบบฝึกหัดส่งท้าย (ระบุที่มาแล้ว)
+## ขอบเขตการใช้ AI
 
-## ต้องทำก่อนส่ง
-1. หากต้องการให้ตรง rubric เต็ม ให้ทีม role-play กับเพื่อนและแทนที่/ยืนยัน findings/persona ด้วยสิ่งที่เกิดขึ้นจริง; ห้ามอ้าง scenario จำลองนี้เป็นผลจากทีม
-2. เปิด mockup ตรวจและแก้ด้วยตัวเองอย่างน้อย 2 จุด พร้อมบันทึกก่อน/หลังของตน
-3. หากต้องส่งผลทดลองในฐานะนักศึกษา ให้รัน prompt/context ด้วยเครื่องมือฟรีและเก็บผลของตน; ตัวอย่างปัจจุบันเป็นการสาธิตโดย Codex
-4. อ่าน inventory_service.py และเพิ่มความเห็นของตนเพื่อเทียบกับ AI review
-5. ทบทวนสมมติฐานและหลักฐานใน debug-log.md ด้วยตัวเอง; commit แยกแต่ละ root cause
-6. ยืนยัน test-results.txt เป็นผล `python -m pytest tests/ -v` จริง (6 passed)
-7. เขียน reflection ใหม่จากประสบการณ์ของตน
-8. ทบทวนที่มาของข้อมูลและทำตามรูปแบบทีม/เดี่ยวที่เลือก จากนั้น commit/push ผลงานและส่งลิงก์ repository กับไฟล์ตาม eLearning
+ผู้ใช้แจ้งเมื่อ 9 ต.ค. 2569 ว่าอาจารย์อนุญาตให้ใช้ AI ช่วยทำ Lab 4 ต่อไปนี้เป็นผลงานที่ Codex ช่วยร่าง/ตรวจตามคำขอ และมี `AI_USE_LOG.md` บันทึกที่มาไว้ ข้อมูลผู้ใช้เป็นสถานการณ์จำลอง ไม่ใช่บทสัมภาษณ์หรือ role-play ที่เกิดขึ้นจริง และไม่ได้ระบุชื่อหรือคำพูดของบุคคลจริง
 
-## แหล่งต้นฉบับ
-https://ecp-rmuti.gitbook.io/software-engineering-in-ai-era/labs/lab04-quickstart
-https://ecp-rmuti.gitbook.io/software-engineering-in-ai-era/labs/lab04-quickstart/lab04-full
+## สิ่งที่อยู่ในชุดงาน
 
-ยังไม่ใช่ชุดงานที่ส่งได้ครบ rubric: findings/persona เป็นสถานการณ์จำลองที่ AI ช่วยร่างตามคำขอผู้ใช้ และส่วนที่โจทย์ให้ผู้เรียนตรวจ/เขียนเองยังเป็น AI-assisted draft. PR #66 ของ Lab 4 ถูก merge เข้า `main` แล้ว; การแก้ scenario รอบนี้ยังต้อง commit/push แยกก่อนจึงจะปรากฏใน remote.
+- `findings-lab04.md`, `persona.md`: findings, needs/pain points/surprises, POV และ journey map 5 ขั้นจาก scenario จำลอง
+- `assets/wireframe-ai.md`: wireframe หน้า Login, Dashboard และ Add Product
+- `assets/inventory-mockup.drawio`, `assets/mockup-link.txt`: mockup แก้ไขได้ 3 หน้าใน draw.io
+- `accessibility-review.md`: checklist, contrast ratio และจุดที่แก้จาก AI draft 2 จุด
+- `prompt-vs-context.md`: prompt 2 รอบ ผลตัวอย่าง และการเปรียบเทียบ โดยเปิดเผยว่า Codex สร้างผลทั้งสองรอบ
+- `inventory_service.py`, `code-review.md`: สำเนาโค้ดผู้สอนและ review comments พร้อมตัวอย่างกรณีผิดพลาด/การจัดหมวด
+- `discount.py`, `tests/test_discount.py`, `debug-log.md`: โค้ดที่แก้แล้ว, หลักฐาน root cause และผลทดสอบ
+- `reflection.md`: ร่างคำตอบแบบฝึกหัดส่งท้ายที่ระบุว่า Codex เป็นผู้ร่าง
+- `AI_USE_LOG.md`: บันทึกการใช้ AI และที่มาของผลลัพธ์
+
+## ผลตรวจที่ยืนยันได้
+
+- `python -m pytest tests/ -v` ผ่าน 6/6 ตาม `test-results.txt`
+- `discount.py` มีการแก้ 3 root causes: สูตรส่วนลด, average ของรายการว่าง และ slice ของ `cheapest_n`
+- mockup draw.io มี 3 หน้า และไฟล์ XML ตรวจ parse ได้
+- contrast ที่คำนวณใน checklist: ข้อความหลัก 17.74:1, ปุ่ม Primary 8.72:1, Success/Warning ประมาณ 5.02:1 บนพื้นขาว
+
+## ข้อจำกัดประวัติ Git
+
+โค้ดแก้ทั้งสาม root causes เดิมถูกรวมใน commit `9315382` ไม่ได้แยก commit ต่อ root cause ตามข้อความใน Lab 4 การแยกประวัติย้อนหลังหลัง PR ถูก merge แล้วจะเป็นการสร้างประวัติใหม่ จึงไม่ได้อ้างว่า commit เดิมแยกไว้แล้ว
+
+เอกสารติดตามผล Lab 4 ล่าสุดอยู่ใน branch `codex/lab4-followup` และแยกจาก Lab 5 แล้ว การสร้าง PR ผ่าน GitHub connector ถูกปฏิเสธด้วย 403; เปิดหน้าเปรียบเทียบ branch ได้ที่:
+https://github.com/filix42k/omegateam-02-inventory/compare/main...codex/lab4-followup?expand=1
+
+## แหล่งโจทย์
+
+- https://ecp-rmuti.gitbook.io/software-engineering-in-ai-era/labs/lab04-quickstart
+- https://ecp-rmuti.gitbook.io/software-engineering-in-ai-era/labs/lab04-quickstart/lab04-full
