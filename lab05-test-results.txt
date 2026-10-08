@@ -1,0 +1,11 @@
+# Lab 5 verification evidence
+
+Instructor baseline: `pricing_legacy.py` was copied unchanged from `C:/Users/fangn/Downloads/lab-05-handout-code/pricing_legacy.py`.
+
+Before refactor: `pytest tests/test_pricing_legacy.py -q` — 12 passed against `pricing_legacy.py`.
+
+After refactor and additional tests: `ruff check .` — All checks passed.
+
+`pytest tests/ --cov --cov-report=term-missing --cov-fail-under=85` — 56 passed; 100% line and branch coverage across `inventory.py`, `pricing_refactored.py`, and `src/sales.py`.
+
+TDD history records the six initial low-stock cases failing before implementation, the green implementation commit, and a separate readability-refactor commit. The working implementation passed all checks after the refactor.

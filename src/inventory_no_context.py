@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 
+
 # 1. สร้าง Notifier Interface และคลาสลูก (ตาม NFR-02 และ Design Notes)
 class Notifier(ABC):
     @abstractmethod
