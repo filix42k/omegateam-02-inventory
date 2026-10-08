@@ -45,7 +45,7 @@ class InventoryService:
             raise ValueError("จำนวนสินค้าต้องมากกว่า 0")
         if name not in self.products:
             raise ValueError("ไม่พบข้อมูลสินค้านี้ในระบบ")
-            
+
         product = self.products[name]
         if product.stock < qty:
             raise ValueError("จำนวนคงเหลือไม่พอ")
