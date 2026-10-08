@@ -53,6 +53,12 @@ def test_sell_exactly_available_quantity_leaves_zero_stock(inventory):
     assert inventory.low_stock_items(0)[0].quantity == 0
 
 
+def test_sell_reduces_stock_and_returns_new_balance(inventory):
+    inventory.add_item("Pencil", 8, 5.0)
+
+    assert inventory.sell("Pencil", 3) == 5
+
+
 @pytest.mark.parametrize("amount", [0, -1])
 def test_sell_rejects_zero_or_negative_quantity_without_changing_stock(inventory, amount):
     inventory.add_item("Pencil", 4, 5.0)
