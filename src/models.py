@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
 from datetime import datetime
 
+
 @dataclass
 class Category:
     name: str
@@ -14,6 +15,8 @@ class Product:
     quantity: int = 0
     threshold: int = 0
     notifier_type: str = "email"
+    product_type: str = "physical"
+    download_url: str | None = None
 
 @dataclass
 class StockTransaction:

@@ -31,7 +31,8 @@ def main_menu():
             inventory.list_items(items_list)
 
         elif choice == "2":
-            # [US-02] Task-03 & Task-04: รับข้อมูลสินค้าใหม่และบันทึกลงระบบ (Assignee: Phongsakhon870, chinchanoknantpromsri)
+            # [US-02] Task-03 & Task-04: รับข้อมูลสินค้าใหม่และบันทึกลงระบบ
+            # Assignee: Phongsakhon870, chinchanoknantpromsri
             print("\n--- เพิ่มสินค้าใหม่ ---")
             code = input("กรอกรหัสสินค้า: ").strip()
             name = input("กรอกชื่อสินค้า: ").strip()

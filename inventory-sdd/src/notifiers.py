@@ -1,6 +1,6 @@
 """Abstraction และ factory สำหรับช่องทางแจ้งเตือน."""
 
-from typing import Protocol, Type
+from typing import Protocol
 
 
 class Notifier(Protocol):
@@ -38,7 +38,7 @@ class SMSNotifier:
 class NotifierFactory:
     """สร้าง notifier โดยไม่ให้ business logic รู้จักคลาสปลายทาง."""
 
-    _notifier_classes: dict[str, Type[Notifier]] = {
+    _notifier_classes: dict[str, type[Notifier]] = {
         "email": EmailNotifier,
         "sms": SMSNotifier,
     }
@@ -52,7 +52,7 @@ class NotifierFactory:
         return notifier_class(destination)
 
     @classmethod
-    def register_notifier(cls, channel: str, notifier_class: Type[Notifier]) -> None:
+    def register_notifier(cls, channel: str, notifier_class: type[Notifier]) -> None:
         """ลงทะเบียนช่องทางใหม่โดยไม่แก้ business logic."""
         normalized_channel = channel.strip().lower()
         if not normalized_channel:

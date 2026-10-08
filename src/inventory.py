@@ -1,6 +1,6 @@
 import json
 import os
-
+import unicodedata
 
 DATA_FILE = "items.json"
 
@@ -19,7 +19,7 @@ def load_items(filename=DATA_FILE):
         return []
 
     try:
-        with open(filename, "r", encoding="utf-8") as file:
+        with open(filename, encoding="utf-8") as file:
             items = json.load(file)
 
         if isinstance(items, list):
@@ -35,9 +35,6 @@ def save_items(items, filename=DATA_FILE):
     """บันทึกข้อมูลสินค้าลงในไฟล์ JSON"""
     with open(filename, "w", encoding="utf-8") as file:
         json.dump(items, file, ensure_ascii=False, indent=4)
-
-
-import unicodedata
 
 
 def _pad_str(text, width, align="left"):
@@ -56,7 +53,11 @@ def list_items(items):
         print("\nยังไม่มีสินค้าในระบบ")
         return
 
-    print(f"\n{_pad_str('รหัส', 12)} {_pad_str('ชื่อสินค้า', 25)} {_pad_str('จำนวนคงเหลือ', 12, 'right')}")
+    header = (
+        f"{_pad_str('รหัส', 12)} {_pad_str('ชื่อสินค้า', 25)} "
+        f"{_pad_str('จำนวนคงเหลือ', 12, 'right')}"
+    )
+    print(f"\n{header}")
     print("-" * 52)
 
     for item in items:
@@ -66,7 +67,8 @@ def list_items(items):
         print(f"{_pad_str(code, 12)} {_pad_str(name, 25)} {_pad_str(quantity, 12, 'right')}")
 
 
-# [US-02] Task-03 & Task-04: ตรวจสอบ Validation รหัสซ้ำ และเพิ่มสินค้า (Assignee: Phongsakhon870, chinchanoknantpromsri)
+# [US-02] Task-03 & Task-04: ตรวจสอบ Validation รหัสซ้ำ และเพิ่มสินค้า
+# Assignee: Phongsakhon870, chinchanoknantpromsri
 def add_item(items, code, name, quantity, filename=DATA_FILE):
     """เพิ่มสินค้าใหม่ โดยตรวจสอบรหัสซ้ำและจำนวนติดลบ"""
     code = code.strip()
