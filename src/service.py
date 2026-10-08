@@ -99,4 +99,4 @@ class InventoryService:
         if product_id not in self.products:
             raise ValueError("ไม่พบสินค้าในระบบ")
         
-        self.products[product_id].threshold = threshold        
+        self.products[product_id].threshold = threshold
