@@ -19,10 +19,10 @@
 5. ทบทวนสมมติฐานและหลักฐานใน debug-log.md ด้วยตัวเอง; commit แยกแต่ละ root cause
 6. ยืนยัน test-results.txt เป็นผล `python -m pytest tests/ -v` จริง (6 passed)
 7. เขียน reflection ใหม่จากประสบการณ์ของตน
-8. สัมภาษณ์ผู้ใช้จริงแทนข้อมูลจำลอง แล้ว commit / push / เปิด PR ให้เพื่อน review และส่งลิงก์ตาม eLearning
+8. สัมภาษณ์ผู้ใช้จริงแทนข้อมูลจำลอง แล้ว commit / push การแก้ไขเพิ่มเติม เปิด PR ให้เพื่อน review และส่งลิงก์ตาม eLearning
 
 ## แหล่งต้นฉบับ
 https://ecp-rmuti.gitbook.io/software-engineering-in-ai-era/labs/lab04-quickstart
 https://ecp-rmuti.gitbook.io/software-engineering-in-ai-era/labs/lab04-quickstart/lab04-full
 
-ยังไม่ใช่ชุดงานที่ส่งได้ครบ rubric: findings/persona ยังเป็นข้อมูลจำลอง และส่วนที่โจทย์ให้ผู้เรียนตรวจ/เขียนเองยังเป็น AI-assisted draft. ยังไม่ได้ commit หรือ push.
+ยังไม่ใช่ชุดงานที่ส่งได้ครบ rubric: findings/persona ยังเป็นข้อมูลจำลอง และส่วนที่โจทย์ให้ผู้เรียนตรวจ/เขียนเองยังเป็น AI-assisted draft. งานปัจจุบัน commit และ push แล้วบน branch `codex/lab4-complete`; PR ยังไม่ได้เปิด.
