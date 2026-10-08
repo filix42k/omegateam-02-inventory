@@ -1,0 +1,3 @@
+inventory-mockup.drawio
+เปิดด้วย diagrams.net / draw.io มี 3 หน้า: Login, Dashboard, Add Product
+สถานะ: AI draft จากข้อมูลผู้ใช้จำลอง รอทีมตรวจและแก้ด้วยตัวเอง

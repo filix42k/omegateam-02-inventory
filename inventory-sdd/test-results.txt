@@ -1,0 +1,17 @@
+Command: python -m pytest tests/ -v
+Environment: Python 3.12.14, pytest 9.1.1 (temporary local test dependency)
+
+tests/test_service.py::test_dispense_crossing_threshold_notifies_selected_email PASSED
+tests/test_service.py::test_equal_threshold_does_not_notify PASSED
+tests/test_service.py::test_does_not_repeat_alert_while_already_below_threshold PASSED
+tests/test_service.py::test_receiving_stock_never_triggers_low_stock_alert PASSED
+tests/test_service.py::test_both_channels_receive_the_transition_alert PASSED
+tests/test_service.py::test_non_positive_receive_and_dispense_are_rejected_without_state_change PASSED
+tests/test_service.py::test_insufficient_stock_does_not_change_stock_or_transactions PASSED
+tests/test_service.py::test_negative_threshold_is_rejected_without_changing_old_value PASSED
+tests/test_service.py::test_stock_value_report_groups_products_by_category PASSED
+tests/test_service.py::test_empty_stock_report_is_zero_with_message PASSED
+tests/test_service.py::test_notifier_factory_can_create_existing_channels PASSED
+tests/test_service.py::test_product_cannot_select_a_channel_without_a_configured_observer PASSED
+
+============================= 12 passed in 0.03s ==============================

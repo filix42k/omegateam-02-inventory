@@ -1,0 +1,11 @@
+Command: python -m pytest tests/ -v
+Environment: Python 3.12.14, pytest 9.1.1 (installed in a temporary, Lab-local dependency directory)
+
+tests/test_discount.py::test_apply_discount_basic PASSED
+tests/test_discount.py::test_apply_discount_zero PASSED
+tests/test_discount.py::test_bulk_total PASSED
+tests/test_discount.py::test_average_price PASSED
+tests/test_discount.py::test_average_price_empty PASSED
+tests/test_discount.py::test_cheapest_n PASSED
+
+============================== 6 passed in 0.03s ==============================
