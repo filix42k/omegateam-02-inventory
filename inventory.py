@@ -1,7 +1,6 @@
 import json
 import os
 
-
 DATA_FILE = "items.json"
 
 
@@ -19,7 +18,7 @@ def load_items(filename=DATA_FILE):
         return []
 
     try:
-        with open(filename, "r", encoding="utf-8") as file:
+        with open(filename, encoding="utf-8") as file:
             items = json.load(file)
 
         if isinstance(items, list):
@@ -54,7 +53,8 @@ def list_items(items):
         print(f"{code:<12} {name:<25} {quantity:>12}")
 
 
-# [US-02] Task-03 & Task-04: ตรวจสอบ Validation รหัสซ้ำ และเพิ่มสินค้า (Assignee: Phongsakhon870, chinchanoknantpromsri)
+# [US-02] Task-03 & Task-04: ตรวจสอบ Validation รหัสซ้ำ และเพิ่มสินค้า
+# Assignee: Phongsakhon870, chinchanoknantpromsri
 def add_item(items, code, name, quantity, filename=DATA_FILE):
     """เพิ่มสินค้าใหม่ โดยตรวจสอบรหัสซ้ำและจำนวนติดลบ"""
     code = code.strip()

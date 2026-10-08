@@ -1,4 +1,5 @@
-from typing import Protocol, Dict, Type
+from typing import Protocol
+
 
 class Notifier(Protocol):
     def notify(self, message: str) -> None:
@@ -22,7 +23,7 @@ class SMSNotifier:
         print(f"[SMS] To: {self.destination} - {message}")
 
 class NotifierFactory:
-    _notifier_classes: Dict[str, Type[Notifier]] = {
+    _notifier_classes: dict[str, type[Notifier]] = {
         "email": EmailNotifier,
         "sms": SMSNotifier
     }
@@ -36,6 +37,6 @@ class NotifierFactory:
         return notifier_class(destination)
 
     @classmethod
-    def register_notifier(cls, channel: str, notifier_class: Type[Notifier]) -> None:
+    def register_notifier(cls, channel: str, notifier_class: type[Notifier]) -> None:
         """ลงทะเบียนช่องทางแจ้งเตือนใหม่ เพื่อรองรับ NFR-02 (Maintainability)"""
         cls._notifier_classes[channel.lower()] = notifier_class        

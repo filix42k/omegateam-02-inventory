@@ -2,7 +2,7 @@ import datetime
 
 import pytest
 
-import pricing_legacy as pricing
+import pricing_refactored as pricing
 
 
 @pytest.fixture(autouse=True)
@@ -70,3 +70,22 @@ def test_log_records_each_call_in_call_order():
     pricing.calc([("Pencil", 1, 20)], member="member-2")
 
     assert pricing.LOG == [(None, 10.7), ("member-2", 20.33)]
+
+
+def test_bulk_discount_is_applied_per_line_before_total_discounts():
+    assert pricing.calc([("Pen", 49, 2), ("Pencil", 50, 2)]) == 206.51
+
+
+def test_member_points_and_coupon_keep_the_legacy_order():
+    assert pricing.calc([("Pen", 10, 100)], member="member-3", coupon="SAVE50") == 963.0
+    assert pricing.member_points == {"member-3": 9}
+
+
+def test_newyear_uses_current_date_when_date_is_omitted(monkeypatch):
+    class JanuaryDate(datetime.date):
+        @classmethod
+        def today(cls):
+            return cls(2026, 1, 1)
+
+    monkeypatch.setattr(pricing.datetime, "date", JanuaryDate)
+    assert pricing.calc([("Pen", 10, 10)], coupon="NEWYEAR") == 85.6

@@ -1,0 +1,13 @@
+[tool.ruff]
+line-length = 100
+extend-exclude = ["lab04-ai-coding-ux", "pricing_legacy.py"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]
+
+[tool.coverage.run]
+branch = true
+source = ["inventory", "pricing_refactored", "src.sales"]
+
+[tool.coverage.report]
+show_missing = true

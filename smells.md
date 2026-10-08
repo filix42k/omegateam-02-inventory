@@ -12,3 +12,17 @@ Line numbers refer to that original file.
 7. **Unstated input and output shapes (line 12).** The tuple format and return type are only described in comments, so callers cannot see the contract from the signature.
 
 The characterization suite records the current behavior, including discount order, the January-only coupon, negative-price clamping, rounding, points, and log side effects. The refactor is kept in a new module so both implementations remain available for comparison.
+
+## What the refactor changed
+
+| Smell | Refactor response |
+|---|---|
+| Opaque names and tuple indices | Use descriptive names and unpack each line into name, quantity, and unit price. |
+| Embedded pricing policy values | Name the tax, member rate, point divisor, bulk thresholds, and coupon amounts/rates. |
+| Mixed responsibilities | Split line totals, subtotal, member discount, and coupon handling into small helpers. |
+| Nested branches and `!= None` | Use early returns and `is None` checks. |
+| Mutable state | Keep `member_points` and `LOG` because callers can observe them; tests reset them around each case. |
+| Current date dependency | Keep the same default-date behavior but let callers inject `today` for deterministic tests. |
+| Unstated types | Add type annotations to the inputs and return value without changing the accepted tuple shape. |
+
+The original `pricing_legacy.py` remains unchanged. `tests/test_pricing_legacy.py` now imports `pricing_refactored.py`; all recorded expectations still pass.

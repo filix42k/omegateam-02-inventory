@@ -1,16 +1,18 @@
-from typing import Dict, Any, List
+from typing import Any
+
 from src.models import Product, StockTransaction
 from src.notifiers import Notifier
 
+
 class InventoryService:
-    def __init__(self, observers: List[Notifier] = None):
+    def __init__(self, observers: list[Notifier] = None):
         """
         รับค่า dependencies เริ่มต้นผ่าน Constructor (DIP)
         :param observers: รายการของ Notifier ที่ทำหน้าที่เป็น Observer
         """
-        self.products: Dict[str, Product] = {}
-        self.transactions: List[StockTransaction] = []
-        self.observers: List[Notifier] = observers if observers is not None else []
+        self.products: dict[str, Product] = {}
+        self.transactions: list[StockTransaction] = []
+        self.observers: list[Notifier] = observers if observers is not None else []
 
     def add_observer(self, observer: Notifier) -> None:
         """เพิ่ม Observer เข้าระบบ"""
@@ -27,7 +29,13 @@ class InventoryService:
         
         product = self.products[product_id]
         product.quantity += quantity
-        self.transactions.append(StockTransaction(product_id=product_id, transaction_type="in", quantity=quantity))
+        self.transactions.append(
+            StockTransaction(
+                product_id=product_id,
+                transaction_type="in",
+                quantity=quantity,
+            )
+        )
 
     def dispense_stock(self, product_id: str, quantity: int) -> None:
         """บันทึกจ่ายสินค้าออก ตรวจสอบจำนวนคงเหลือ และแจ้งเตือนหากต่ำกว่า Threshold"""
@@ -41,18 +49,27 @@ class InventoryService:
             raise ValueError("จำนวนคงเหลือไม่พอ")
         
         product.quantity -= quantity
-        self.transactions.append(StockTransaction(product_id=product_id, transaction_type="out", quantity=quantity))
+        self.transactions.append(
+            StockTransaction(
+                product_id=product_id,
+                transaction_type="out",
+                quantity=quantity,
+            )
+        )
 
         self._check_threshold_and_notify(product)
 
     def _check_threshold_and_notify(self, product: Product) -> None:
         """ตรวจสอบสถานะสต็อกและเรียก notify ทุก observer ถ้าต่ำกว่ากำหนด"""
         if product.quantity < product.threshold:
-            message = f"แจ้งเตือนสต็อกต่ำ: สินค้า {product.name} คงเหลือ {product.quantity} (Threshold: {product.threshold})"
+            message = (
+                f"แจ้งเตือนสต็อกต่ำ: สินค้า {product.name} คงเหลือ {product.quantity} "
+                f"(Threshold: {product.threshold})"
+            )
             for observer in self.observers:
                 observer.notify(message)
 
-    def get_stock_value_report(self) -> Dict[str, Any]:
+    def get_stock_value_report(self) -> dict[str, Any]:
         """คำนวณและคืนค่ารายงานมูลค่าสต็อกรวมแยกตามหมวดหมู่สินค้า"""
         if not self.products:
             return {
@@ -61,7 +78,7 @@ class InventoryService:
                 "total_value": 0.0
             }
 
-        category_totals: Dict[str, float] = {}
+        category_totals: dict[str, float] = {}
         total_value = 0.0
 
         for product in self.products.values():

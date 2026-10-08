@@ -1,6 +1,7 @@
 """Business logic ของระบบ inventory สำหรับ Lab 3."""
 
-from typing import Any, Mapping
+from collections.abc import Mapping
+from typing import Any
 
 from src.models import Product, StockTransaction
 from src.notifiers import Notifier

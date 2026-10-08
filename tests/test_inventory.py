@@ -46,6 +46,46 @@ def test_negative_threshold_returns_empty_list(inventory):
     assert inventory.low_stock_items(-1) == []
 
 
+@pytest.mark.parametrize(
+    ("name", "quantity", "price", "message"),
+    [
+        (" ", 0, 5.0, "ชื่อสินค้าต้องไม่ว่างเปล่า"),
+        ("Pen", -1, 5.0, "จำนวนสินค้าต้องไม่ติดลบ"),
+        ("Pen", 1, 0, "ราคาต้องมากกว่าศูนย์"),
+    ],
+)
+def test_add_item_rejects_invalid_values(inventory, name, quantity, price, message):
+    with pytest.raises(ValueError, match=message):
+        inventory.add_item(name, quantity, price)
+
+
+def test_add_item_rejects_duplicate_name(inventory):
+    inventory.add_item("Pen", 1, 5.0)
+
+    with pytest.raises(ValueError, match="มีอยู่ในระบบแล้ว"):
+        inventory.add_item("Pen", 2, 5.0)
+
+
+def test_restock_validates_item_and_amount(inventory):
+    with pytest.raises(KeyError, match="ไม่พบสินค้า"):
+        inventory.restock("Missing", 1)
+
+    inventory.add_item("Pen", 1, 5.0)
+    for amount in (0, -1):
+        with pytest.raises(ValueError, match="จำนวนที่เติมต้องมากกว่าศูนย์"):
+            inventory.restock("Pen", amount)
+
+    assert inventory.restock("Pen", 2) == 3
+
+
+def test_total_value_sums_quantity_times_price(inventory):
+    assert inventory.get_total_value() == 0
+    inventory.add_item("Pen", 3, 5.0)
+    inventory.add_item("Ruler", 2, 10.0)
+
+    assert inventory.get_total_value() == 35.0
+
+
 def test_sell_exactly_available_quantity_leaves_zero_stock(inventory):
     inventory.add_item("Pencil", 4, 5.0)
 

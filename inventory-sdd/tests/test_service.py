@@ -118,7 +118,8 @@ def test_empty_stock_report_is_zero_with_message():
 
 
 def test_notifier_factory_can_create_existing_channels():
-    assert NotifierFactory.create("email", "manager@example.test").destination == "manager@example.test"
+    email_notifier = NotifierFactory.create("email", "manager@example.test")
+    assert email_notifier.destination == "manager@example.test"
     assert NotifierFactory.create("sms", "0000000000").destination == "0000000000"
 
 
